@@ -16,34 +16,27 @@ class TrackList {
   tracks: TrackManager[];
 
   // #region Private methods
-  private addTrack(
-    name: string,
-    releaseDate: string,
-    duration: number,
-    artists: string[],
-    albumName: string
-  ) {
-    const track = new Track(name, releaseDate, duration, artists, albumName);
+  private addTrack(data: TrackData) {
+    const track = new Track(
+      data.name,
+      data.releaseDate,
+      data.duration,
+      data.artists,
+      data.albumName
+    );
     const trackEditor = new TrackEditor(track);
     this.tracks.push({ track, trackEditor });
   }
 
-  private updateTrack(
-    id: string,
-    name: string,
-    releaseDate: string,
-    duration: number,
-    artists: string[],
-    albumName: string
-  ) {
-    const trackManager: TrackManager = this.getTrackManager(id);
+  private updateTrack(data: TrackData) {
+    const trackManager: TrackManager = this.getTrackManager(data.id);
     if (trackManager) {
       const updatedTrack = trackManager.trackEditor.setAllData(
-        name,
-        duration,
-        releaseDate,
-        artists,
-        albumName
+        data.name,
+        data.duration,
+        data.releaseDate,
+        data.artists,
+        data.albumName
       );
       trackManager.track = updatedTrack;
     }
@@ -58,27 +51,24 @@ class TrackList {
   // #endregion
 
   // #region Public methods
+  /**
+   * Create or update a track according to data transmitted
+   * @param data
+   */
   submitTrack(data: TrackData) {
     if (data.id) {
-      this.updateTrack(
-        data.id,
-        data.name,
-        data.releaseDate,
-        data.duration,
-        data.artists,
-        data.albumName
-      );
+      this.updateTrack(data);
     } else {
-      this.addTrack(
-        data.name,
-        data.releaseDate,
-        data.duration,
-        data.artists,
-        data.albumName
-      );
+      this.addTrack(data);
     }
   }
 
+  /**
+   * Restore specific track version and update versions order
+   * @param trackId
+   * @param indexVersion : track version to restore
+   * @returns track or null
+   */
   restoreTrack(trackId: string, indexVersion: number) {
     let trackManager = this.getTrackManager(trackId);
     if (trackManager) {

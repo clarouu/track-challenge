@@ -18,6 +18,11 @@ class TrackEditor {
   // #endregion
 
   // #region Public methods
+  /**
+   * Restore specific track version and update versions order
+   * @param indexVersion : track version to restore
+   * @returns track or null
+   */
   restoreVersion(indexVersion: number) {
     if (indexVersion < 5) {
       this.track = this.versionning[indexVersion];
@@ -35,26 +40,31 @@ class TrackEditor {
   setName(name: string) {
     this.track.name = name;
     this.updateVersionning();
+    return this.track;
   }
 
   setDuration(duration: number) {
     this.track.duration = duration;
     this.updateVersionning();
+    return this.track;
   }
 
   setReleaseDate(releaseDate: string) {
     this.track.releaseDate = releaseDate;
     this.updateVersionning();
+    return this.track;
   }
 
   setArtists(artists: string[]) {
     this.track.artists = artists;
     this.updateVersionning();
+    return this.track;
   }
 
   setAlbumName(albumName: string) {
     this.track.albumName = albumName;
     this.updateVersionning();
+    return this.track;
   }
 
   setAllData(
